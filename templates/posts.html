@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Все задачи
+{% endblock %}
+
+{% block content %}
+<h1>Все задачи</h1>
+
+<!-- Фильтр по тегам -->
+<form method="get" action="{{ url_for('posts') }}">
+    <div class="form-group">
+        <label for="tags">Фильтр по тегам:</label>
+        <select name="tags" id="tags" multiple class="form-control">
+            {% for tag in all_tags %}
+                <option value="{{ tag.name }}">{{ tag.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+</form>
+
+<!-- Кнопки для сортировки -->
+<div class="sort-buttons">
+    <a href="{{ url_for('posts', sort_by='title', order='asc') }}" class="btn btn-outline-primary">Номер билета ↑</a>
+    <a href="{{ url_for('posts', sort_by='title', order='desc') }}" class="btn btn-outline-primary">Номер билета ↓</a>
+    <a href="{{ url_for('posts', sort_by='level', order='asc') }}" class="btn btn-outline-primary">Номер задачи ↑</a>
+    <a href="{{ url_for('posts', sort_by='level', order='desc') }}" class="btn btn-outline-primary">номер задачи ↓</a>
+
+
+
+</div>
+
+<div class="row mt-3">
+    {% for post in posts %}
+    <div class="col-md-6 item">
+        <div class="item-in">
+            <h4>Билет номер: {{ post.title }}</h4>
+            <div class="seperator"></div>
+            <p>Номер задания в билете: {{ post.level }}</p>
+            <!-- Ссылка на полную информацию -->
+            <a href="{{ url_for('show_post_detail', id=post.id) }}" class="btn btn-outline-primary">К задаче</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
